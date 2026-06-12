@@ -81,7 +81,7 @@ if __name__ == '__main__':
     dataset_treino_completo = datasets.ImageFolder(root=TRAIN_DIR, transform=transformacoes)
     dataset_validacao_completo = datasets.ImageFolder(root=VALID_DIR, transform=transformacoes)
 
-    # 2. SELEÇÃO DO DATASET 
+    # SELEÇÃO DO DATASET 
     QTD_TREINO = 2000       
     QTD_VALIDACAO = 1000    
 
@@ -93,7 +93,6 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Ajustando dinamicamente os parâmetros de carregamento baseados no dispositivo encontrado
     if device.type == "cuda":
         BATCH_SIZE = 64
         num_workers_config = 2
@@ -108,7 +107,7 @@ if __name__ == '__main__':
     dataloader_validacao = DataLoader(dataset_validacao, batch_size=BATCH_SIZE, shuffle=False, 
                                       num_workers=num_workers_config, pin_memory=pin_memory_config)
 
-    print("📊 --- STATUS DO EXPERIMENTO ---")
+    print(" --- STATUS DO EXPERIMENTO ---")
     print(f"Imagens de treino utilizadas: {len(dataset_treino)}")
     print(f"Imagens de validação utilizadas: {len(dataset_validacao)}")
     print(f"🚀 Dispositivo de processamento ativo: {device.type.upper()}")
@@ -141,9 +140,8 @@ if __name__ == '__main__':
         dataloader_treino, dataloader_validacao, dataset_treino, dataset_validacao, device, num_epochs=5
     )
 
-    # TABELA COMPARATIVA FINAL
     print("\n" + "="*60)
-    print("📊 TABELA COMPARATIVA FINAL")
+    print( " TABELA COMPARATIVA FINAL")
     print("="*60)
     print(f"AlexNet   -> Parâmetros: {params_alex:,} | Tempo Total: {tempo_alex:.2f}s | Acc Validação: {acc_alex:.4f}")
     print(f"ResNet-18 -> Parâmetros: {params_res:,} | Tempo Total: {tempo_res:.2f}s | Acc Validação: {acc_res:.4f}")
