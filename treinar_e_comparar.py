@@ -14,10 +14,10 @@ np.random.seed(42)
 # FUNÇÃO PADRÃO DE TREINAMENTO
 # ==========================================
 def treinar_modelo(nome_modelo, modelo, criterion, optimizer, dataloader_treino, dataloader_val, dataset_treino, dataset_val, device, num_epochs=5):
-    print(f"\n🔥 Iniciando o treinamento da {nome_modelo} no {device.type.upper()}...")
+    print(f"\nIniciando o treinamento da {nome_modelo} no {device.type.upper()}...")
     
     total_params = sum(p.numel() for p in modelo.parameters() if p.requires_grad)
-    print(f"📦 Total de parâmetros treináveis: {total_params:,}")
+    print(f"Total de parâmetros treináveis: {total_params:,}")
     
     tempo_inicial_total = time.time()
     
@@ -61,7 +61,7 @@ def treinar_modelo(nome_modelo, modelo, criterion, optimizer, dataloader_treino,
             val_corrects += torch.sum(preds == labels.data)
     
     val_acc = val_corrects.double() / len(dataset_val)
-    print(f"🎯 Acurácia Final de Validação ({nome_modelo}): {val_acc:.4f}")
+    print(f"Acurácia Final de Validação ({nome_modelo}): {val_acc:.4f}")
     
     return total_params, tempo_total, val_acc.item()
 
