@@ -7,7 +7,6 @@ import numpy as np
 from torchvision import datasets, transforms, models
 from torch.utils.data import DataLoader, Subset
 
-# Configuração para garantir que os resultados aleatórios sejam reprodutíveis
 torch.manual_seed(42)
 np.random.seed(42)
 
@@ -67,10 +66,8 @@ def treinar_modelo(nome_modelo, modelo, criterion, optimizer, dataloader_treino,
     return total_params, tempo_total, val_acc.item()
 
 
-# O SEGREDO PARA O WINDOWS: Todo o fluxo de execução precisa estar dentro deste bloco IF
 if __name__ == '__main__':
     
-    # 1. CONFIGURAÇÕES INICIAIS E CAMINHOS
     DATA_DIR = "./dados/cats_and_dogs_filtered"
     TRAIN_DIR = os.path.join(DATA_DIR, "train")
     VALID_DIR = os.path.join(DATA_DIR, "validation")
@@ -94,17 +91,14 @@ if __name__ == '__main__':
     dataset_treino = Subset(dataset_treino_completo, indices_treino)
     dataset_validacao = Subset(dataset_validacao_completo, indices_validacao)
 
-    # DETECÇÃO DE GPU INTELIGENTE
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Ajustando dinamicamente os parâmetros de carregamento baseados no dispositivo encontrado
     if device.type == "cuda":
-        # Configuração agressiva para GPU potente
         BATCH_SIZE = 64
         num_workers_config = 2
         pin_memory_config = True
     else:
-        # Configuração segura para CPU para evitar novos avisos/erros
         BATCH_SIZE = 32
         num_workers_config = 0
         pin_memory_config = False
@@ -121,7 +115,7 @@ if __name__ == '__main__':
     if device.type == "cuda":
         print(f"Placa detectada: {torch.cuda.get_device_name(0)}")
 
-    # 4. CONFIGURAÇÃO E TREINO DA ALEXNET
+    # CONFIGURAÇÃO E TREINO DA ALEXNET
     alexnet = models.alexnet(weights=None)
     alexnet.classifier[6] = nn.Linear(alexnet.classifier[6].in_features, 2)
     alexnet = alexnet.to(device)
@@ -134,7 +128,7 @@ if __name__ == '__main__':
         dataloader_treino, dataloader_validacao, dataset_treino, dataset_validacao, device, num_epochs=5
     )
 
-    # 5. CONFIGURAÇÃO E TREINO DA RESNET-18
+    # CONFIGURAÇÃO E TREINO DA RESNET-18
     resnet18 = models.resnet18(weights=None)
     resnet18.fc = nn.Linear(resnet18.fc.in_features, 2)
     resnet18 = resnet18.to(device)
@@ -147,7 +141,7 @@ if __name__ == '__main__':
         dataloader_treino, dataloader_validacao, dataset_treino, dataset_validacao, device, num_epochs=5
     )
 
-    # 6. TABELA COMPARATIVA FINAL
+    # TABELA COMPARATIVA FINAL
     print("\n" + "="*60)
     print("📊 TABELA COMPARATIVA FINAL")
     print("="*60)
